@@ -21,4 +21,14 @@ public class SQLConstants {
         return "DELETE FROM categories WHERE id = " + id;
     }
 
+    public static String updateCategoryById() {
+        return "UPDATE categories" +
+                " SET name = ?" +
+                " WHERE id = ?";
+    }
+
+    public static String countCategories() {
+        return "SELECT COUNT(*) FROM categories";
+    }
+
 }

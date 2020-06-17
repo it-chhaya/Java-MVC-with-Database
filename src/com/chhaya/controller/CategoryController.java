@@ -2,6 +2,7 @@ package com.chhaya.controller;
 
 import com.chhaya.model.dao.impl.CategoryDaoImpl;
 import com.chhaya.model.dto.Category;
+import com.chhaya.utils.Pagination;
 import com.chhaya.view.CategoryView;
 
 import java.util.List;
@@ -41,11 +42,11 @@ public class CategoryController {
         }
     }
 
-    public void findAllCategories(int page, int limit) {
+    public void findAllCategories(Pagination paging) {
 
-        List<Category> categories = categoryDao.findAll(page, limit);
+        List<Category> categories = categoryDao.findAll(paging);
 
-        categories.forEach(System.out::println);
+        categoryView.displayCategories(categories, paging);
 
     }
 
@@ -55,6 +56,26 @@ public class CategoryController {
             System.out.println("Deleted successfully");
         else
             System.out.println("Delete failed");
+    }
+
+    public Category updateCategoryById() {
+
+        Category newCategory = categoryView.updateCategoryView();
+
+        int result = categoryDao.update(newCategory);
+
+        if (result == 1) {
+            System.out.println("Category is updated successfully");
+            return newCategory;
+        } else {
+            System.out.println("Category is failed with updating");
+            return null;
+        }
+
+    }
+
+    public int countCategory() {
+        return categoryDao.count();
     }
 
 

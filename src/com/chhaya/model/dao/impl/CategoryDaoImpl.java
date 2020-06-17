@@ -15,7 +15,7 @@ import java.util.List;
 
 public class CategoryDaoImpl implements CategoryDao {
 
-    private Connection con;
+    private final Connection con;
 
     public CategoryDaoImpl() {
         con = DbUtil.getConnection();
@@ -27,7 +27,6 @@ public class CategoryDaoImpl implements CategoryDao {
         int result = 0;
 
         try (PreparedStatement pstmt = con.prepareStatement(SQLConstants.insertCategory(category))) {
-            System.out.println(SQLConstants.insertCategory(category));
             result = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,13 +54,9 @@ public class CategoryDaoImpl implements CategoryDao {
     }
 
     @Override
-    public List<Category> findAll(int page, int limit) {
+    public List<Category> findAll(Pagination paging) {
 
         List<Category> categories = new ArrayList<>();
-
-        Pagination paging = new Pagination();
-        paging.setPage(page);
-        paging.setLimit(limit);
 
         try (PreparedStatement pstmt = con.prepareStatement(SQLConstants.findAllCategories(paging.getLimit(), paging.getOffset()))) {
             ResultSet rs = pstmt.executeQuery();
@@ -92,7 +87,46 @@ public class CategoryDaoImpl implements CategoryDao {
 
     @Override
     public int update(Category newCategory) {
-        return 0;
+
+        int result = 0;
+
+        try (PreparedStatement pstmt =
+                     con.prepareStatement(SQLConstants.updateCategoryById())) {
+
+            pstmt.setString(1, newCategory.getName());
+            pstmt.setInt(2, newCategory.getId());
+
+            result = pstmt.executeUpdate();
+
+            if (result == 1) {
+                return result;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    @Override
+    public int count() {
+
+        int result = 0;
+
+        try (PreparedStatement pstmt =
+                     con.prepareStatement(SQLConstants.countCategories())) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next())
+                result = rs.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
 }
