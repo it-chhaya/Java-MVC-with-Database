@@ -164,8 +164,8 @@ public class MenuController {
 
         switch (option.toLowerCase()) {
             case "a": {
-                /*paging.setTotalRecords(categoryController.countCategory());
-                categoryController.findAllCategories(paging);*/
+                paging.setTotalRecords(productController.count());
+                productController.displayAllProduct(paging);
                 break;
             }
             case "w": {
@@ -173,7 +173,7 @@ public class MenuController {
                 break;
             }
             case "r": {
-                categoryController.findCategoryById();
+                productController.viewProductByID();
                 break;
             }
             case "d": {
@@ -189,44 +189,44 @@ public class MenuController {
                 break;
             }
             case "f": {
-                /*paging.setTotalRecords(categoryController.countCategory());
+                paging.setTotalRecords(productController.count());
                 paging.setPage(1);
-                categoryController.findAllCategories(paging);*/
+                productController.displayAllProduct(paging);
                 break;
             }
             case "p": {
-                /*paging.setTotalRecords(categoryController.countCategory());
+                paging.setTotalRecords(productController.count());
                 if (paging.getPage() - 1 >= 1) {
                     paging.setPage(paging.getPage() - 1);
-                    categoryController.findAllCategories(paging);
+                    productController.displayAllProduct(paging);
                 } else {
                     MsgUtils.showMsg("FAILURE", "Invalid Page");
-                }*/
+                }
                 break;
             }
             case "n": {
-                /*paging.setTotalRecords(categoryController.countCategory());
+                paging.setTotalRecords(productController.count());
                 if (paging.getPage() + 1 <= paging.getTotalPages()) {
                     paging.setPage(paging.getPage() + 1);
-                    categoryController.findAllCategories(paging);
+                    productController.displayAllProduct(paging);
                 } else {
                     MsgUtils.showMsg("FAILURE", "Invalid Page");
-                }*/
+                }
                 break;
             }
             case "l": {
-                /*paging.setTotalRecords(categoryController.countCategory());
+                paging.setTotalRecords(productController.count());
                 paging.setPage(paging.getTotalPages());
-                categoryController.findAllCategories(paging);*/
+                categoryController.findAllCategories(paging);
                 break;
             }
             case "g": {
-                /*paging.setPage(categoryController.gotoPage());
+                paging.setPage(categoryController.gotoPage());
                 if (paging.getPage() > 0 && paging.getPage() <= paging.getTotalPages()) {
-                    categoryController.findAllCategories(paging);
+                    productController.displayAllProduct(paging);
                 } else {
                     MsgUtils.showMsg("FAILURE", "Invalid Page");
-                }*/
+                }
                 break;
             }
             case "e": {

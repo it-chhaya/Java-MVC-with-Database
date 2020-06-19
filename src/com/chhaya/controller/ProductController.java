@@ -5,6 +5,7 @@ import com.chhaya.model.dao.impl.ProductDaoImpl;
 import com.chhaya.model.dto.Category;
 import com.chhaya.model.dto.Product;
 import com.chhaya.utils.MsgUtils;
+import com.chhaya.utils.Pagination;
 import com.chhaya.view.ProductView;
 
 public class ProductController {
@@ -37,6 +38,25 @@ public class ProductController {
 
     public Category getCategoryById(int id) {
         return categoryDao.find(id);
+    }
+
+    public void viewProductByID() {
+        int id = productView.findProductByIdView();
+        Product product = productDao.find(id);
+        if (product != null){
+            MsgUtils.showMsg("Success","Your product");
+            productView.displayOneProductView(product);
+        }else {
+            MsgUtils.showMsg("fail","Your product doesn't exist");
+        }
+    }
+
+    public void displayAllProduct(Pagination pages) {
+        productView.displayProduct(productDao.findAll(pages), pages);
+    }
+
+    public int count(){
+        return productDao.count();
     }
 
 }
