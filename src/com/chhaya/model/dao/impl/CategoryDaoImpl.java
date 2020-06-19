@@ -4,7 +4,7 @@ import com.chhaya.model.dao.CategoryDao;
 import com.chhaya.model.dto.Category;
 import com.chhaya.utils.DbUtil;
 import com.chhaya.utils.Pagination;
-import com.chhaya.utils.SQLConstants;
+import com.chhaya.utils.sql.CategorySQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +26,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
         int result = 0;
 
-        try (PreparedStatement pstmt = con.prepareStatement(SQLConstants.insertCategory(category))) {
+        try (PreparedStatement pstmt = con.prepareStatement(CategorySQL.insertCategory(category))) {
             result = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -41,7 +41,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
         Category category = null;
 
-        try (PreparedStatement pstmt = con.prepareStatement(SQLConstants.findCategoryById(id))) {
+        try (PreparedStatement pstmt = con.prepareStatement(CategorySQL.findCategoryById(id))) {
             ResultSet rs = pstmt.executeQuery();
             if (rs.next())
                 category = new Category(rs.getInt("id"), rs.getString("name"));
@@ -58,7 +58,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
         List<Category> categories = new ArrayList<>();
 
-        try (PreparedStatement pstmt = con.prepareStatement(SQLConstants.findAllCategories(paging.getLimit(), paging.getOffset()))) {
+        try (PreparedStatement pstmt = con.prepareStatement(CategorySQL.findAllCategories(paging.getLimit(), paging.getOffset()))) {
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 categories.add(new Category(rs.getInt("id"), rs.getString("name")));
@@ -75,7 +75,7 @@ public class CategoryDaoImpl implements CategoryDao {
 
         int result = 0;
 
-        try (PreparedStatement pstmt = con.prepareStatement(SQLConstants.deleteCategoryById(id))) {
+        try (PreparedStatement pstmt = con.prepareStatement(CategorySQL.deleteCategoryById(id))) {
             result = pstmt.executeUpdate();
             return result;
         } catch (SQLException e) {
@@ -91,7 +91,7 @@ public class CategoryDaoImpl implements CategoryDao {
         int result = 0;
 
         try (PreparedStatement pstmt =
-                     con.prepareStatement(SQLConstants.updateCategoryById())) {
+                     con.prepareStatement(CategorySQL.updateCategoryById())) {
 
             pstmt.setString(1, newCategory.getName());
             pstmt.setInt(2, newCategory.getId());
@@ -115,7 +115,7 @@ public class CategoryDaoImpl implements CategoryDao {
         int result = 0;
 
         try (PreparedStatement pstmt =
-                     con.prepareStatement(SQLConstants.countCategories())) {
+                     con.prepareStatement(CategorySQL.countCategories())) {
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -129,4 +129,38 @@ public class CategoryDaoImpl implements CategoryDao {
         return result;
     }
 
+    @Override
+    public List<Category> findAllByName(Pagination paging, String name) {
+        List<Category> categories = new ArrayList<>();
+
+        try (PreparedStatement pstmt = con.prepareStatement(CategorySQL.findCategoryByName(paging, name))) {
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                categories.add(new Category(rs.getInt("id"), rs.getString("name")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return categories;
+    }
+
+    @Override
+    public int countByName(String name) {
+        int result = 0;
+
+        try (PreparedStatement pstmt =
+                     con.prepareStatement(CategorySQL.countCategoriesByName(name))) {
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next())
+                result = rs.getInt(1);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 }

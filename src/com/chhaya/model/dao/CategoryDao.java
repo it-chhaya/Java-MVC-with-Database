@@ -10,8 +10,10 @@ public interface CategoryDao {
     int save(Category category);
     Category find(int id);
     List<Category> findAll(Pagination paging);
+    List<Category> findAllByName(Pagination paging, String name);
     int delete(int id);
     int update(Category newCategory);
     int count();
+    int countByName(String name);
 
 }

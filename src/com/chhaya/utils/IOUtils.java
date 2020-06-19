@@ -6,6 +6,18 @@ import java.util.regex.Pattern;
 
 public class IOUtils {
 
+    public static double inputDouble(String instruction) {
+        Scanner scanner = new Scanner(System.in);
+        do {
+            try {
+                System.out.print(instruction);
+                return Double.parseDouble(scanner.nextLine());
+            } catch (NumberFormatException e){
+                System.out.println("You can input only floating point number");
+            }
+        } while (true);
+    }
+
     public static int inputInteger(String instruction) {
         Scanner scanner = new Scanner(System.in);
         do {

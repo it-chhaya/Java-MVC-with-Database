@@ -1,4 +1,4 @@
-package com.chhaya.utils;
+package com.chhaya.utils.constants;
 
 public class MenuConstants {
 

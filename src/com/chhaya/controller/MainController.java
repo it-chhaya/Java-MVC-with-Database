@@ -1,8 +1,10 @@
 package com.chhaya.controller;
 
 import com.chhaya.model.dao.impl.CategoryDaoImpl;
+import com.chhaya.model.dao.impl.ProductDaoImpl;
 import com.chhaya.view.CategoryView;
 import com.chhaya.view.MenuView;
+import com.chhaya.view.ProductView;
 
 public class MainController {
 
@@ -15,7 +17,16 @@ public class MainController {
                 categoryDao, categoryView
         );
 
-        MenuController menuController = new MenuController(menuView, categoryController);
+        ProductDaoImpl productDao = new ProductDaoImpl();
+        ProductView productView = new ProductView();
+        ProductController productController = new ProductController(
+                productDao, productView
+        );
+        productController.setCategoryDao(categoryDao);
+        productView.setProductController(productController);
+
+        MenuController menuController = new MenuController(menuView,
+                categoryController, productController);
 
         menuController.display();
 

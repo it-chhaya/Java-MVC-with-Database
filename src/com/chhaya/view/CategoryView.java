@@ -22,6 +22,10 @@ public class CategoryView {
        return IOUtils.inputInteger("Enter category ID > ");
     }
 
+    public String findCategoriesByNameView() {
+        return IOUtils.inputString("Enter category NAME > ");
+    }
+
     public Category updateCategoryView() {
         int id = IOUtils.inputInteger("Enter category ID > ");
         String name = IOUtils.inputString("Enter category name > ");
@@ -33,8 +37,8 @@ public class CategoryView {
         Table body = new Table(2, BorderStyle.CLASSIC, ShownBorders.ALL);
         CellStyle alignRight = new CellStyle(CellStyle.HorizontalAlign.right);
 
-        body.setColumnWidth(0, 15, 30);
-        body.setColumnWidth(1, 15, 30);
+        body.setColumnWidth(0, 15, 15);
+        body.setColumnWidth(1, 41, 41);
 
         body.addCell("ID");
         body.addCell("NAME");
@@ -51,5 +55,19 @@ public class CategoryView {
 
     }
 
+    public void displayOneCategoryView(Category category) {
+        Table table = new Table(2, BorderStyle.CLASSIC, ShownBorders.ALL);
+        table.setColumnWidth(0, 20, 20);
+        table.setColumnWidth(1, 36, 36);
+        table.addCell("ID");
+        table.addCell(category.getId() + "");
+        table.addCell("NAME");
+        table.addCell(category.getName());
+        System.out.println(table.render());
+    }
+
+    public int gotoPageView() {
+        return IOUtils.inputInteger("Enter page to go > ");
+    }
 
 }

@@ -2,6 +2,7 @@ package com.chhaya.controller;
 
 import com.chhaya.model.dao.impl.CategoryDaoImpl;
 import com.chhaya.model.dto.Category;
+import com.chhaya.utils.MsgUtils;
 import com.chhaya.utils.Pagination;
 import com.chhaya.view.CategoryView;
 
@@ -9,8 +10,8 @@ import java.util.List;
 
 public class CategoryController {
 
-    private CategoryDaoImpl categoryDao;
-    private CategoryView categoryView;
+    private final CategoryDaoImpl categoryDao;
+    private final CategoryView categoryView;
 
     public CategoryController(CategoryDaoImpl categoryDao, CategoryView categoryView) {
         this.categoryDao = categoryDao;
@@ -22,9 +23,9 @@ public class CategoryController {
         if (category != null) {
             int result = categoryDao.save(category);
             if (result == 1)
-                System.out.println("Category is saved.");
+                MsgUtils.showMsg("SUCCEED", "Category saved!");
             else
-                System.out.println("Category cannot saved.");
+                MsgUtils.showMsg("FAILURE", "Category not saved!");
         }
     }
 
@@ -33,11 +34,11 @@ public class CategoryController {
         if (id > 0) {
             Category category = categoryDao.find(id);
             if (category != null) {
-                System.out.println("Category is found");
-                System.out.println(category);
+                MsgUtils.showMsg("SUCCEED", "Category found!");
+                categoryView.displayOneCategoryView(category);
             }
             else {
-                System.out.println("Category is not found");
+                MsgUtils.showMsg("FAILURE", "Category not found!");
             }
         }
     }
@@ -53,29 +54,44 @@ public class CategoryController {
     public void deleteCategoryById() {
         int result = categoryDao.delete(categoryView.findCategoryByIdView());
         if (result == 1)
-            System.out.println("Deleted successfully");
+            MsgUtils.showMsg("SUCCEED","Deleted!");
         else
-            System.out.println("Delete failed");
+            MsgUtils.showMsg("FAILURE", "Cannot delete!");
     }
 
-    public Category updateCategoryById() {
+    public void updateCategoryById() {
 
         Category newCategory = categoryView.updateCategoryView();
 
         int result = categoryDao.update(newCategory);
 
         if (result == 1) {
-            System.out.println("Category is updated successfully");
-            return newCategory;
+            MsgUtils.showMsg("SUCCEED", "Updated!");
+            categoryView.displayOneCategoryView(newCategory);
         } else {
-            System.out.println("Category is failed with updating");
-            return null;
+            MsgUtils.showMsg("FAILURE", "Cannot update!");
         }
 
     }
 
     public int countCategory() {
         return categoryDao.count();
+    }
+
+    public void findAllCategoriesByName(Pagination paging) {
+
+        String name = categoryView.findCategoriesByNameView();
+        int count = categoryDao.countByName(name);
+
+        List<Category> categories = categoryDao.findAllByName(paging, name);
+        paging.setTotalRecords(count);
+
+        categoryView.displayCategories(categories, paging);
+
+    }
+
+    public int gotoPage() {
+        return categoryView.gotoPageView();
     }
 
 

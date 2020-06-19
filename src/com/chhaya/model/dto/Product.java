@@ -1,6 +1,7 @@
 package com.chhaya.model.dto;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class Product {
 

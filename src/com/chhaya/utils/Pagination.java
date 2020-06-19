@@ -45,7 +45,7 @@ public class Pagination {
     }
 
     public int getTotalPages() {
-        return totalRecords / limit;
+        return (int) Math.ceil((double) totalRecords / (double)limit);
     }
 
 }
